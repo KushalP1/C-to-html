@@ -1,0 +1,150 @@
+<html><pre>
+
+1   <font color='#FF00FF'><b>#include&lt;bits/stdc++.h&gt;</b></font>
+2   <a name='using'><font color='#0000FF'>using</font></a> <a name='namespace'><font color='#0000FF'>namespace</font></a> <a name='std'><font color='#0000FF'>std</font></a>;
+3   <font color='#00FF00'>// Creating shortcut for an integer pair</font>
+4   <font color='#0000FF'><b>typedef</font></b> <a name='pair'><font color='#0000FF'>pair</font></a><b>&lt;</b><font color='#0000FF'><b>int</font></b><b>,</b><font color='#0000FF'><b>int</font></b><b>&gt;</b><a name='iPair'><font color='#0000FF'>iPair</font></a>;
+5   <font color='#00FF00'>// Structure to represent a graph</font>
+6   <font color='#0000FF'><b>struct</font></b> <a name='Graph'><font color='#0000FF'>Graph</font></a> 
+7   {
+8       <font color='#0000FF'><b>int</font></b> <a name='V'><font color='#0000FF'>V</font></a><b>,</b><a name='E'><font color='#0000FF'>E</font></a>;
+9       <a name='vector'><font color='#0000FF'>vector</font></a><b>&lt;</b><a href='#pair'><font color='#0000FF'>pair</font></a><b>&lt;</b><font color='#0000FF'><b>int</font></b><b>,</b><a href='#iPair'><font color='#0000FF'>iPair</font></a><b>&gt;</b><b>&gt;</b><a name='edges'><font color='#0000FF'>edges</font></a>;
+10      <font color='#00FF00'>// Constructor</font>
+11      <a href='#Graph'><font color='#0000FF'>Graph</font></a>( <font color='#0000FF'><b>int</font></b> <a href='#V'><font color='#0000FF'>V</font></a><b>,</b><font color='#0000FF'><b>int</font></b> <a href='#E'><font color='#0000FF'>E</font></a>) 
+12      {
+13          <a name='this'><font color='#0000FF'>this</font></a><b>-&gt;</b><a href='#V'><font color='#0000FF'>V</font></a> <b>=</b><a href='#V'><font color='#0000FF'>V</font></a>;
+14          <a href='#this'><font color='#0000FF'>this</font></a><b>-&gt;</b><a href='#E'><font color='#0000FF'>E</font></a> <b>=</b><a href='#E'><font color='#0000FF'>E</font></a>;
+15          
+16      }
+17      <font color='#00FF00'>// Utility function to add an edge</font>
+18      <font color='#0000FF'><b>void</font></b> <a name='addEdge'><font color='#0000FF'>addEdge</font></a>( <font color='#0000FF'><b>int</font></b> <a name='u'><font color='#0000FF'>u</font></a><b>,</b><font color='#0000FF'><b>int</font></b> <a name='v'><font color='#0000FF'>v</font></a><b>,</b><font color='#0000FF'><b>int</font></b> <a name='w'><font color='#0000FF'>w</font></a>) 
+19      {
+20          <a href='#edges'><font color='#0000FF'>edges</font></a><font color='#00FFFF'>.</font><a name='push_back'><font color='#0000FF'>push_back</font></a>( 
+21          {
+22              <a href='#w'><font color='#0000FF'>w</font></a><b>,</b>
+23              {
+24                  <a href='#u'><font color='#0000FF'>u</font></a><b>,</b><a href='#v'><font color='#0000FF'>v</font></a>
+25              }
+26              
+27          }
+28          ) ;
+29          
+30      }
+31      <font color='#00FF00'>// Function to find MST using Kruskal's</font>
+32      <font color='#00FF00'>// MST algorithm</font>
+33      <font color='#0000FF'><b>int</font></b> <a name='kruskalMST'><font color='#0000FF'>kruskalMST</font></a>( ) ;
+34      
+35  }
+36  ;
+37  <font color='#00FF00'>// To represent Disjoint Sets</font>
+38  <font color='#0000FF'><b>struct</font></b> <a name='DisjointSets'><font color='#0000FF'>DisjointSets</font></a> 
+39  {
+40      <font color='#0000FF'><b>int</font></b> <b>*</b><a name='parent'><font color='#0000FF'>parent</font></a><b>,</b><b>*</b><a name='rnk'><font color='#0000FF'>rnk</font></a>;
+41      <font color='#0000FF'><b>int</font></b> <a name='n'><font color='#0000FF'>n</font></a>;
+42      <font color='#00FF00'>// Constructor.</font>
+43      <a href='#DisjointSets'><font color='#0000FF'>DisjointSets</font></a>( <font color='#0000FF'><b>int</font></b> <a href='#n'><font color='#0000FF'>n</font></a>) 
+44      {
+45          <font color='#00FF00'>// Allocate memory</font>
+46          <a href='#this'><font color='#0000FF'>this</font></a><b>-&gt;</b><a href='#n'><font color='#0000FF'>n</font></a> <b>=</b><a href='#n'><font color='#0000FF'>n</font></a>;
+47          <a href='#parent'><font color='#0000FF'>parent</font></a> <b>=</b><a name='new'><font color='#0000FF'>new</font></a> <font color='#0000FF'><b>int</font></b>[<a href='#n'><font color='#0000FF'>n</font></a><b>+</b><font color='#00FFFF'><I>1</I></font>];
+48          <a href='#rnk'><font color='#0000FF'>rnk</font></a> <b>=</b><a href='#new'><font color='#0000FF'>new</font></a> <font color='#0000FF'><b>int</font></b>[<a href='#n'><font color='#0000FF'>n</font></a><b>+</b><font color='#00FFFF'><I>1</I></font>];
+49          <font color='#00FF00'>// Initially, all vertices are in</font>
+50          <font color='#00FF00'>// different sets and have rank 0.</font>
+51          <font color='#0000FF'><b>for</font></b> ( <font color='#0000FF'><b>int</font></b> <a name='i'><font color='#0000FF'>i</font></a> <b>=</b><font color='#00FFFF'><I>0</I></font>; <a href='#i'><font color='#0000FF'>i</font></a> <b>&lt;=</b><a href='#n'><font color='#0000FF'>n</font></a>; <a href='#i'><font color='#0000FF'>i</font></a><b>+</b><b>+</b>) 
+52          {
+53              <a href='#rnk'><font color='#0000FF'>rnk</font></a>[<a href='#i'><font color='#0000FF'>i</font></a>]<b>=</b><font color='#00FFFF'><I>0</I></font>;
+54              <font color='#00FF00'>//every element is parent of itself</font>
+55              <a href='#parent'><font color='#0000FF'>parent</font></a>[<a href='#i'><font color='#0000FF'>i</font></a>]<b>=</b><a href='#i'><font color='#0000FF'>i</font></a>;
+56              
+57          }
+58          
+59      }
+60      <font color='#00FF00'>// Find the parent of a node 'u'</font>
+61      <font color='#00FF00'>// Path Compression</font>
+62      <font color='#0000FF'><b>int</font></b> <a name='find'><font color='#0000FF'>find</font></a>( <font color='#0000FF'><b>int</font></b> <a href='#u'><font color='#0000FF'>u</font></a>) 
+63      {
+64          <font color='#00FF00'>/* Make the parent of the nodes in the path
+           from u--&gt; parent[u] point to parent[u] */</font><font color='#0000FF'><b>if</font></b> ( <a href='#u'><font color='#0000FF'>u</font></a> <b>!=</b><a href='#parent'><font color='#0000FF'>parent</font></a>[<a href='#u'><font color='#0000FF'>u</font></a>]) <a href='#parent'><font color='#0000FF'>parent</font></a>[<a href='#u'><font color='#0000FF'>u</font></a>]<b>=</b><a href='#find'><font color='#0000FF'>find</font></a>( <a href='#parent'><font color='#0000FF'>parent</font></a>[<a href='#u'><font color='#0000FF'>u</font></a>]) ;
+65          <a name='cout'><font color='#0000FF'>cout</font></a><b>&lt;&lt;</b><a href='#parent'><font color='#0000FF'>parent</font></a>[<a href='#u'><font color='#0000FF'>u</font></a>]<b>&lt;&lt;</b><font color='#FF0000'>&quot;.&quot;</font>;
+66          <font color='#0000FF'><b>return</font></b> <a href='#parent'><font color='#0000FF'>parent</font></a>[<a href='#u'><font color='#0000FF'>u</font></a>];
+67          
+68      }
+69      <font color='#00FF00'>// Union by rank</font>
+70      <font color='#0000FF'><b>void</font></b> <a name='merge'><font color='#0000FF'>merge</font></a>( <font color='#0000FF'><b>int</font></b> <a name='x'><font color='#0000FF'>x</font></a><b>,</b><font color='#0000FF'><b>int</font></b> <a name='y'><font color='#0000FF'>y</font></a>) 
+71      {
+72          <a href='#x'><font color='#0000FF'>x</font></a> <b>=</b><a href='#find'><font color='#0000FF'>find</font></a>( <a href='#x'><font color='#0000FF'>x</font></a>) <b>,</b><a href='#y'><font color='#0000FF'>y</font></a> <b>=</b><a href='#find'><font color='#0000FF'>find</font></a>( <a href='#y'><font color='#0000FF'>y</font></a>) ;
+73          <font color='#00FF00'>/* Make tree with smaller height
+           a subtree of the other tree  */</font><font color='#0000FF'><b>if</font></b> ( <a href='#rnk'><font color='#0000FF'>rnk</font></a>[<a href='#x'><font color='#0000FF'>x</font></a>]<b>&gt;</b><a href='#rnk'><font color='#0000FF'>rnk</font></a>[<a href='#y'><font color='#0000FF'>y</font></a>]) <a href='#parent'><font color='#0000FF'>parent</font></a>[<a href='#y'><font color='#0000FF'>y</font></a>]<b>=</b><a href='#x'><font color='#0000FF'>x</font></a>;
+74          <font color='#0000FF'><b>else</font></b> <font color='#00FF00'>// If rnk[x] &lt;= rnk[y]</font>
+75          <a href='#parent'><font color='#0000FF'>parent</font></a>[<a href='#x'><font color='#0000FF'>x</font></a>]<b>=</b><a href='#y'><font color='#0000FF'>y</font></a>;
+76          <font color='#0000FF'><b>if</font></b> ( <a href='#rnk'><font color='#0000FF'>rnk</font></a>[<a href='#x'><font color='#0000FF'>x</font></a>]<b>==</b><a href='#rnk'><font color='#0000FF'>rnk</font></a>[<a href='#y'><font color='#0000FF'>y</font></a>]) <a href='#rnk'><font color='#0000FF'>rnk</font></a>[<a href='#y'><font color='#0000FF'>y</font></a>]<b>+</b><b>+</b>;
+77          
+78      }
+79      
+80  }
+81  ;
+82  <font color='#00FF00'>/* Functions returns weight of the MST*/</font><font color='#0000FF'><b>int</font></b> <a href='#Graph'><font color='#0000FF'>Graph</font></a><b>:</b><b>:</b><a href='#kruskalMST'><font color='#0000FF'>kruskalMST</font></a>( ) 
+83  {
+84      <font color='#0000FF'><b>int</font></b> <a name='mst_wt'><font color='#0000FF'>mst_wt</font></a> <b>=</b><font color='#00FFFF'><I>0</I></font>;
+85      <font color='#00FF00'>// Initialize result</font>
+86      <font color='#00FF00'>// Sort edges in increasing order on basis of cost</font>
+87      <a name='sort'><font color='#0000FF'>sort</font></a>( <a href='#edges'><font color='#0000FF'>edges</font></a><font color='#00FFFF'>.</font><a name='begin'><font color='#0000FF'>begin</font></a>( ) <b>,</b><a href='#edges'><font color='#0000FF'>edges</font></a><font color='#00FFFF'>.</font><a name='end'><font color='#0000FF'>end</font></a>( ) ) ;
+88      <font color='#00FF00'>// Create disjoint sets</font>
+89      <a href='#DisjointSets'><font color='#0000FF'>DisjointSets</font></a> <a name='ds'><font color='#0000FF'>ds</font></a>( <a href='#V'><font color='#0000FF'>V</font></a>) ;
+90      <font color='#00FF00'>// Iterate through all sorted edges</font>
+91      <a href='#vector'><font color='#0000FF'>vector</font></a><b>&lt;</b><a href='#pair'><font color='#0000FF'>pair</font></a><b>&lt;</b><font color='#0000FF'><b>int</font></b><b>,</b><a href='#iPair'><font color='#0000FF'>iPair</font></a><b>&gt;</b><b>&gt;</b><b>:</b><b>:</b><a name='iterator'><font color='#0000FF'>iterator</font></a> <a name='it'><font color='#0000FF'>it</font></a>;
+92      <font color='#0000FF'><b>for</font></b> ( <a href='#it'><font color='#0000FF'>it</font></a><b>=</b><a href='#edges'><font color='#0000FF'>edges</font></a><font color='#00FFFF'>.</font><a href='#begin'><font color='#0000FF'>begin</font></a>( ) ; <a href='#it'><font color='#0000FF'>it</font></a><b>!=</b><a href='#edges'><font color='#0000FF'>edges</font></a><font color='#00FFFF'>.</font><a href='#end'><font color='#0000FF'>end</font></a>( ) ; <a href='#it'><font color='#0000FF'>it</font></a><b>+</b><b>+</b>) 
+93      {
+94          <font color='#0000FF'><b>int</font></b> <a href='#u'><font color='#0000FF'>u</font></a> <b>=</b><a href='#it'><font color='#0000FF'>it</font></a><b>-&gt;</b><a name='second'><font color='#0000FF'>second</font></a><font color='#00FFFF'>.</font><a name='first'><font color='#0000FF'>first</font></a>;
+95          <font color='#0000FF'><b>int</font></b> <a href='#v'><font color='#0000FF'>v</font></a> <b>=</b><a href='#it'><font color='#0000FF'>it</font></a><b>-&gt;</b><a href='#second'><font color='#0000FF'>second</font></a><font color='#00FFFF'>.</font><a href='#second'><font color='#0000FF'>second</font></a>;
+96          <font color='#0000FF'><b>int</font></b> <a name='set_u'><font color='#0000FF'>set_u</font></a> <b>=</b><a href='#ds'><font color='#0000FF'>ds</font></a><font color='#00FFFF'>.</font><a href='#find'><font color='#0000FF'>find</font></a>( <a href='#u'><font color='#0000FF'>u</font></a>) ;
+97          <font color='#0000FF'><b>int</font></b> <a name='set_v'><font color='#0000FF'>set_v</font></a> <b>=</b><a href='#ds'><font color='#0000FF'>ds</font></a><font color='#00FFFF'>.</font><a href='#find'><font color='#0000FF'>find</font></a>( <a href='#v'><font color='#0000FF'>v</font></a>) ;
+98          <a href='#cout'><font color='#0000FF'>cout</font></a><b>&lt;&lt;</b><a href='#set_u'><font color='#0000FF'>set_u</font></a><b>&lt;&lt;</b><a href='#set_v'><font color='#0000FF'>set_v</font></a>;
+99          <font color='#00FF00'>// Check if the selected edge is creating</font>
+100         <font color='#00FF00'>// a cycle or not (Cycle is created if u</font>
+101         <font color='#00FF00'>// and v belong to same set)</font>
+102         <font color='#0000FF'><b>if</font></b> ( <a href='#set_u'><font color='#0000FF'>set_u</font></a> <b>!=</b><a href='#set_v'><font color='#0000FF'>set_v</font></a>) 
+103         {
+104             <font color='#00FF00'>// Current edge will be in the MST</font>
+105             <font color='#00FF00'>// so print it</font>
+106             <a href='#cout'><font color='#0000FF'>cout</font></a> <b>&lt;&lt;</b><a href='#u'><font color='#0000FF'>u</font></a> <b>&lt;&lt;</b><font color='#FF0000'>&quot; - &quot;</font><b>&lt;&lt;</b><a href='#v'><font color='#0000FF'>v</font></a> <b>&lt;&lt;</b><a name='endl'><font color='#0000FF'>endl</font></a>;
+107             <font color='#00FF00'>// Update MST weight</font>
+108             <a href='#mst_wt'><font color='#0000FF'>mst_wt</font></a> <b>+=</b><a href='#it'><font color='#0000FF'>it</font></a><b>-&gt;</b><a href='#first'><font color='#0000FF'>first</font></a>;
+109             <font color='#00FF00'>// Merge two sets</font>
+110             <a href='#ds'><font color='#0000FF'>ds</font></a><font color='#00FFFF'>.</font><a href='#merge'><font color='#0000FF'>merge</font></a>( <a href='#set_u'><font color='#0000FF'>set_u</font></a><b>,</b><a href='#set_v'><font color='#0000FF'>set_v</font></a>) ;
+111             
+112         }
+113         
+114     }
+115     <font color='#0000FF'><b>return</font></b> <a href='#mst_wt'><font color='#0000FF'>mst_wt</font></a>;
+116     
+117 }
+118 <font color='#00FF00'>// Driver program to test above functions</font>
+119 <font color='#0000FF'><b>int</font></b> <a name='main'><font color='#0000FF'>main</font></a>( ) 
+120 {
+121     <font color='#00FF00'>/* Let us create above shown weighted
+       and unidrected graph */</font><font color='#0000FF'><b>int</font></b> <a href='#V'><font color='#0000FF'>V</font></a> <b>=</b><font color='#00FFFF'><I>9</I></font><b>,</b><a href='#E'><font color='#0000FF'>E</font></a> <b>=</b><font color='#00FFFF'><I>14</I></font>;
+122     <a href='#Graph'><font color='#0000FF'>Graph</font></a> <a name='g'><font color='#0000FF'>g</font></a>( <a href='#V'><font color='#0000FF'>V</font></a><b>,</b><a href='#E'><font color='#0000FF'>E</font></a>) ;
+123     <font color='#00FF00'>//  making above shown graph</font>
+124     <a href='#g'><font color='#0000FF'>g</font></a><font color='#00FFFF'>.</font><a href='#addEdge'><font color='#0000FF'>addEdge</font></a>( <font color='#00FFFF'><I>0</I></font><b>,</b><font color='#00FFFF'><I>1</I></font><b>,</b><font color='#00FFFF'><I>4</I></font>) ;
+125     <a href='#g'><font color='#0000FF'>g</font></a><font color='#00FFFF'>.</font><a href='#addEdge'><font color='#0000FF'>addEdge</font></a>( <font color='#00FFFF'><I>0</I></font><b>,</b><font color='#00FFFF'><I>7</I></font><b>,</b><font color='#00FFFF'><I>8</I></font>) ;
+126     <a href='#g'><font color='#0000FF'>g</font></a><font color='#00FFFF'>.</font><a href='#addEdge'><font color='#0000FF'>addEdge</font></a>( <font color='#00FFFF'><I>1</I></font><b>,</b><font color='#00FFFF'><I>2</I></font><b>,</b><font color='#00FFFF'><I>8</I></font>) ;
+127     <a href='#g'><font color='#0000FF'>g</font></a><font color='#00FFFF'>.</font><a href='#addEdge'><font color='#0000FF'>addEdge</font></a>( <font color='#00FFFF'><I>1</I></font><b>,</b><font color='#00FFFF'><I>7</I></font><b>,</b><font color='#00FFFF'><I>11</I></font>) ;
+128     <a href='#g'><font color='#0000FF'>g</font></a><font color='#00FFFF'>.</font><a href='#addEdge'><font color='#0000FF'>addEdge</font></a>( <font color='#00FFFF'><I>2</I></font><b>,</b><font color='#00FFFF'><I>3</I></font><b>,</b><font color='#00FFFF'><I>7</I></font>) ;
+129     <a href='#g'><font color='#0000FF'>g</font></a><font color='#00FFFF'>.</font><a href='#addEdge'><font color='#0000FF'>addEdge</font></a>( <font color='#00FFFF'><I>2</I></font><b>,</b><font color='#00FFFF'><I>8</I></font><b>,</b><font color='#00FFFF'><I>2</I></font>) ;
+130     <a href='#g'><font color='#0000FF'>g</font></a><font color='#00FFFF'>.</font><a href='#addEdge'><font color='#0000FF'>addEdge</font></a>( <font color='#00FFFF'><I>2</I></font><b>,</b><font color='#00FFFF'><I>5</I></font><b>,</b><font color='#00FFFF'><I>4</I></font>) ;
+131     <a href='#g'><font color='#0000FF'>g</font></a><font color='#00FFFF'>.</font><a href='#addEdge'><font color='#0000FF'>addEdge</font></a>( <font color='#00FFFF'><I>3</I></font><b>,</b><font color='#00FFFF'><I>4</I></font><b>,</b><font color='#00FFFF'><I>9</I></font>) ;
+132     <a href='#g'><font color='#0000FF'>g</font></a><font color='#00FFFF'>.</font><a href='#addEdge'><font color='#0000FF'>addEdge</font></a>( <font color='#00FFFF'><I>3</I></font><b>,</b><font color='#00FFFF'><I>5</I></font><b>,</b><font color='#00FFFF'><I>14</I></font>) ;
+133     <a href='#g'><font color='#0000FF'>g</font></a><font color='#00FFFF'>.</font><a href='#addEdge'><font color='#0000FF'>addEdge</font></a>( <font color='#00FFFF'><I>4</I></font><b>,</b><font color='#00FFFF'><I>5</I></font><b>,</b><font color='#00FFFF'><I>10</I></font>) ;
+134     <a href='#g'><font color='#0000FF'>g</font></a><font color='#00FFFF'>.</font><a href='#addEdge'><font color='#0000FF'>addEdge</font></a>( <font color='#00FFFF'><I>5</I></font><b>,</b><font color='#00FFFF'><I>6</I></font><b>,</b><font color='#00FFFF'><I>2</I></font>) ;
+135     <a href='#g'><font color='#0000FF'>g</font></a><font color='#00FFFF'>.</font><a href='#addEdge'><font color='#0000FF'>addEdge</font></a>( <font color='#00FFFF'><I>6</I></font><b>,</b><font color='#00FFFF'><I>7</I></font><b>,</b><font color='#00FFFF'><I>1</I></font>) ;
+136     <a href='#g'><font color='#0000FF'>g</font></a><font color='#00FFFF'>.</font><a href='#addEdge'><font color='#0000FF'>addEdge</font></a>( <font color='#00FFFF'><I>6</I></font><b>,</b><font color='#00FFFF'><I>8</I></font><b>,</b><font color='#00FFFF'><I>6</I></font>) ;
+137     <a href='#g'><font color='#0000FF'>g</font></a><font color='#00FFFF'>.</font><a href='#addEdge'><font color='#0000FF'>addEdge</font></a>( <font color='#00FFFF'><I>7</I></font><b>,</b><font color='#00FFFF'><I>8</I></font><b>,</b><font color='#00FFFF'><I>7</I></font>) ;
+138     <a href='#cout'><font color='#0000FF'>cout</font></a> <b>&lt;&lt;</b><font color='#FF0000'>&quot;Edges of MST are \n&quot;</font>;
+139     <font color='#0000FF'><b>int</font></b> <a href='#mst_wt'><font color='#0000FF'>mst_wt</font></a> <b>=</b><a href='#g'><font color='#0000FF'>g</font></a><font color='#00FFFF'>.</font><a href='#kruskalMST'><font color='#0000FF'>kruskalMST</font></a>( ) ;
+140     <a href='#cout'><font color='#0000FF'>cout</font></a> <b>&lt;&lt;</b><font color='#FF0000'>&quot;\nWeight of MST is &quot;</font><b>&lt;&lt;</b><a href='#mst_wt'><font color='#0000FF'>mst_wt</font></a>;
+141     <font color='#0000FF'><b>return</font></b> <font color='#00FFFF'><I>0</I></font>;
+142     
+143 }
+144 
+</pre></html>
